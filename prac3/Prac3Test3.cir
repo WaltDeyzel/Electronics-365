@@ -1,0 +1,53 @@
+* NGSPICE test bench for Electronics 365 Practical 3
+* -------------------------------------------------------------------
+* Author:	Coenrad Fourie & Tessa Hall
+* Last Mod:	04 October 2020
+* -------------------------------------------------------------------
+* INFO: Practical 3 Compensated Circuit will plug into this testbench
+* for analysis. It must pass all checks for full marks.
+* -------------------------------------------------------------------
+* THIS TEST BENCH IS ONLY FOR STUDENT NUMBERS ENDING IN 2 OR 3!!!
+* -------------------------------------------------------------------
+
+* Student circuit is subckt "comps" in file "yourstudentnumber.cir" - Use your student number
+.include 21738394_No_Compensation.cir
+
+* ================== FEEDBACK AMPLIFIER ==================
+Xcircuit pa na pb nb vcc vee vo1 vo2 vx1 vx2 comps
+
+* DC Voltage Supply
+VCC     vcc    0       DC   10
+VEE     vee    0       DC   -10
+
+.param  VOS=2m
+.param  IB2=3.2u
+.param  IB1=2.8u
+
+VOS1    pa     vx1     DC     VOS
+VOS2    vx2    vo1     DC     VOS
+IBA1    pa     0       DC     IB1
+IBA2    na     0       DC     IB2
+IBB1    pb     0       DC     IB1
+IBB2    nb     0       DC     IB2
+
+.control
+  op
+  echo Offset voltage and input current compensated:
+  print v(vo1) v(vo2)
+
+  let mark = 0
+  if v(vo1) <= 33m
+     if v(vo1) >= 0
+       let mark = mark + 1
+     end
+  end
+  if v(vo2) <= 149m
+     if v(vo2) >= 0
+       let mark = mark + 1
+     end
+  end
+  echo
+  echo FINAL MARK = "$&mark"
+  echo
+.endc
+.end

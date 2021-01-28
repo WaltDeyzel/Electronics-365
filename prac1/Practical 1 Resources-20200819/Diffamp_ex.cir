@@ -1,0 +1,29 @@
+* SPICE model for differential amplifier
+* ---------------------------------------
+* Surname: Your surname
+* First name: Your first name
+* Student number: Your student number 
+* ---------------------------------------
+.include models.cir
+
+* Define differential amplifier as a subcircuit
+.subckt diffamp in1 in2 out vcc vee
+
+* -------- Start of student code --------
+
+
+* Differential Stage
+RC1   vcc   cc1  200
+Q1    cc1   in1  roo   MODEL3
+RC2   vcc   out  200
+Q2    out   in2  roo   MODEL3
+
+* Current source
+
+R1 vcc abc 250k
+Qa vcc abc aaa MODEL3
+Qb abc aaa vee MODEL3
+Qc roo aaa vee MODEL3
+
+* --------- End of student code ---------
+.ends

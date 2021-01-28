@@ -1,0 +1,41 @@
+* SPICE model for feedback amplifier
+* ---------------------------------------
+* Surname: DEYZEL
+* First name: WALT
+* Student number: 21750793
+* ---------------------------------------
+.include models.cir
+
+* Define feedback amplifier as a subcircuit
+.subckt feedamp in out nvcc
+
+* -------- Start of student code --------
+
+R11 nb1 nvcc 65k
+R21 nb1 0 30k
+
+RC1 nvcc nc1 5k
+RC2 nvcc nc2 7k
+
+RE1 ne1 0 2k
+RE2 ne2 0 5k
+
+RLL out 0 10k
+RS1 in ccc 0.5k
+
+Q1 nc1 nb1 ne1 MODEL3
+Q2 nc2 nc1 ne2 MODEL3
+
+C1 ccc nin 1
+C2 ne1 0 1
+C3 nc2 out 1
+
+CF ne2 fff 1
+RF fff nb1 5.25K
+
+VRI nin nb1 DC 0
+
+
+
+* --------- End of student code ---------
+.ends

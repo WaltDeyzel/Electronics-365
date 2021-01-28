@@ -1,0 +1,26 @@
+Circuit: * C:\Users\waltd\OneDrive\Documents\semester2\Electronics\pracs\prac1\Practical 1 Resources-20200819\Draft1.asc
+
+A1: all pins shorted together -- ignoring.
+Direct Newton iteration for .op point succeeded.
+Heightened Def Con from 0.199823 to 0.199823
+Heightened Def Con from 1 to 1
+Heightened Def Con from 1.00004 to 1.00004
+Heightened Def Con from 2.59999 to 2.59999
+
+Date: Sat Aug 29 17:09:15 2020
+Total elapsed time: 0.130 seconds.
+
+tnom = 27
+temp = 27
+method = modified trap
+totiter = 10419
+traniter = 10404
+tranpoints = 2979
+accept = 2411
+rejected = 572
+matrix size = 14
+fillins = 1
+solver = Normal
+Matrix Compiler1: 706 bytes object code size  0.2/0.1/[0.1]
+Matrix Compiler2: 1.14 KB object code size  0.1/0.1/[0.1]
+

@@ -1,0 +1,54 @@
+*Practical 2 Asection B
+
+Vcc vcc 0 DC 10
+Vin nvs 0 0 AC 1 0
+
+R11 nb1 vcc 130k
+R21 nb1 0 50k
+
+RC1 vcc nc1 5k
+RC2 vcc nc2 8k
+
+RE1 ne1 0 1.8k
+RE2 ne2 0 7k
+
+RLL nvo 0 1k
+RS1 nvs ccc 0.75k
+
+Q1 nc1 nb1 ne1 BJT1
+Q2 nc2 nc1 ne2 BJT1
+
+C1 ccc tem 1
+C2 ne1 0 1
+C3 nvo nc2 1
+
+CF ne2 fff 1
+RF fff nb1 2.5k
+
+* Measure current from source
+VRI tem nb1 DC 0
+
+.model BJT1 NPN (BF=150 VAF=1000 IS=1e-15)
+
+.control
+*  Do ac analysis at single frequency (1 kHz in this case)
+  AC    DEC     1  1k   1k
+
+*  Measure ac magnitudes at 1 kHz
+
+  meas ac vo max v(nvo) AT=1k
+  meas ac is max i(vri) AT=1k
+  meas ac vss max v(tem) AT=1k
+
+
+  let av = vo/1
+  let rin = vss/(is)
+
+
+echo
+  echo Open-loop voltage gain Av = "$&av" V/V
+  echo Input resistance = "$&rin" Ohm
+echo
+.endc
+
+.end

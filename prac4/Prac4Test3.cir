@@ -1,0 +1,58 @@
+* NGSPICE test bench for Electronics 365 Practical 4
+* -------------------------------------------------------------------
+* Author:	Coenrad Fourie & Tessa Hall
+* Last Mod:	18 October 2020
+* -------------------------------------------------------------------
+* INFO: Practical 4 Filter will plug into this testbench
+* for analysis. It must pass all checks for full marks.
+* -------------------------------------------------------------------
+* THIS TEST BENCH IS ONLY FOR STUDENT NUMBERS ENDING IN 2 OR 3!!!
+* -------------------------------------------------------------------
+
+* Student circuit is subckt "filt" in file "yourstudentnumber.cir" - Use your student number
+.include 21750793.cir
+
+* ================== FEEDBACK AMPLIFIER ==================
+Xcircuit in out vcc vee filt
+
+* DC Voltage Supply
+VCC     vcc    0       DC   15
+VEE     vee    0       DC   -15
+Vi1     in     0       0    AC    1     0
+
+.control
+  ac  DEC  101   1 100k
+  meas ac v10  find vdb(out) at=100
+  meas ac v100 find vdb(out) at=100
+  meas ac v3000 find vdb(out) at=3000
+  meas ac v4000 find vdb(out) at=4000
+  plot vdb(out)
+
+  let mark = 0
+  if v4000 < v3000
+    if (v100 - 0.1) < v10
+      if (v100 + 0.1) > v10
+        if (v100 - 2.1) > v3000
+          if (v100 - 3.1) < v3000
+            let mark = mark + 1
+          end
+        end
+      end
+    end
+  end
+
+  let dBdrop = v100-v3000
+  echo dB dropped at cutoff frequency = "$&dBdrop"
+
+  let Av = 10^(v100/20)
+  echo Av = "$&Av"
+  if Av > 9.95
+    if Av < 10.05
+      let mark = mark + 1
+    end
+  end
+
+  echo
+  echo FINAL MARK = "$&mark"
+
+.endc

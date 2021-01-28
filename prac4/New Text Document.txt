@@ -1,0 +1,102 @@
+
+
+.include TL081.cir
+
+VCC     vcc    0    DC     15
+VEE     vee    0    DC    -15
+
+XA1     Ap1     An1     vcc     vee    Aout1    TL081
+XB1		Bp1     Bn1     vcc     vee    Bout1    TL081
+XC1		Cp1     Cn1     vcc     vee    Cout1    TL081
+
+
+RA1  I Ap1 199
+C1 	 Ap1 0 100n
+RA0  An1 Aout1 0
+
+
+RB2	 Aout1 x1 322
+RB3  x1 Bp1  123
+C3 Bp1 0 100n
+RBa Bn1 Bout1 889
+RBb Bn1  0   889
+C2 x1 Bout1 100n
+
+RC4 Bout1 y1 123
+RC5 y1 Cp1 322
+C4 Cp1 0 100n
+RCa Cout1 Cn1 889
+RCb Cn1  0 889
+C5 Cout1 y1 100n
+
+
+
+*Vi1      I      0       0     AC    1     0
+Vi1 I 0 PULSE(-1 1 20m 1n 1n 2m 4m)
+
+
+XA2     Ap2    	An2    	vcc    	vee    Aout2    TL081
+XB2		Bp2     Bn2     vcc     vee    Bout2    TL081
+XC2		Cp2     Cn2     vcc     vee    Cout2    TL081
+
+
+RA1q  	I 		Ap2 	132.02
+C1q 	Ap2 	0 		100n
+RA0q  	An2 	Aout2 	0
+
+
+RB2q	Aout2 	x2 		103.55
+RB3q  	x2 		Bp2 	123.285
+C3q 	Bp2 	0 		100n
+RBaq 	Bn2 	Bout2 	453.6
+RBbq 	Bn2  	0   	453.6
+C2q 	x2 		Bout2 	100n
+
+RC4q	Bout2 	y2 	71.811
+RC5q 	y2 		Cp2 226.15
+C4q 	Cp2 	0 	100n
+RCaq 	Cout2 	Cn2 596
+RCbq 	Cn2  	0 	596
+C5q 	Cout2 	y2 	100n
+
+
+
+*Vi2      I2     0       0     AC    1     0
+
+
+
+XA3     Ap3    	An3    	vcc    	vee    Aout3    TL081
+XB3		Bp3     Bn3     vcc     vee    Bout3    TL081
+XC3		Cp3     Cn3     vcc     vee    Cout3    TL081
+
+
+RA1w  	I 		Ap3 	1118
+C1w 	Ap3 	0 		100n
+RA0w  	An3 	Aout3 	0
+
+
+RB2w	Aout3 	x3 		1811.775
+RB3w  	x3 		Bp3 	23.337
+C3w 	Bp3 	0 		100n
+RBaw 	Bn3 	Bout3 	3670.225
+RBbw 	Bn3  	0   	3670.225
+C2w 	x3 		Bout3 	100n
+
+RC4w	Bout3 	y3 	692.739
+RC5w 	y3 		Cp3 151.549
+C4w 	Cp3 	0 	100n
+RCaw 	Cout3 	Cn3 1688.576
+RCbw 	Cn3  	0 	1688.576
+C5w 	Cout3 	y3 	100n
+
+
+
+*Vi3      I3     0       0     AC    1     0
+
+.control
+  *ac  DEC 1000 1000 100k
+  *plot vdb(Cout1) vdb(Cout2) Vdb(Cout3)
+	tran 1u 50m 15m
+	plot v(Cout1) v(Cout2) v(Cout3)
+	*plot v(Cout2)
+.endc

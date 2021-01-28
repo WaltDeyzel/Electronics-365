@@ -1,0 +1,37 @@
+
+.include models.cir
+* -------- Start of student code --------
+Vcc vcc 0 10
+Vee vee 0 -10
+* Differential Stage
+RC1   vcc   cc1  15K
+Q1    cc1   in1  roo   MODEL3
+RC2   vcc   out  15K
+Q2    out   in2  roo   MODEL3
+
+* Current source
+Qa aaa aaa bbb MODEL3
+Qb bbb bbb vee MODEL3
+Qc ve1 bbb vee MODEL3
+Qd roo aaa ve1 MODEL3
+R1 vcc aaa 185k
+
+* --------- End of student code ---------
+
+* Common mode input voltage:
+Vcm   nVcm   0     DC    0
+
+Ed1   nIn1  nVcm  nControl  0  0.5
+Ed2   nIn2  nVcm  nControl  0 -0.5
+
+Vd    nControl 0 DC 0
+
+Rd nControl 0 10k
+
+.control
+* Sweep Vd from -0.1 V to 0.1 V in steps of 1 mV
+  DC Vd -0.1 0.1 0.001
+  plot v(cc1) v(out)
+.endc
+
+.end

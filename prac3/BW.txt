@@ -1,0 +1,38 @@
+* Title:    Explore gain bandwidth product of op-amp
+* Author:   CJ Fourie
+* Last mod: 20 September 2020
+*====================================================
+
+.subckt opamp   non    inv     out
+Ri      non    inv     1e14
+Eout    out    0       non    inv    1e7
+.ends
+
+* Define amplifier circuit with compensation as a subcircuit
+.subckt comps pa na pb nb vcc vee vo1 vo2 vx1 vx2
+
+
+
+VCC     vcc    0    DC    15
+VEE     vee    0    DC   -15
+XOPAMP  0      inv  vcc    vee    out    opamp
+R1      i      inv  20k
+R2      inv    out  80k
+
+RL      out    0    150k
+vi      i      0    0    ac    1    0
+
+.control
+   * Do AC sweep when AvCL approxeq 1E6
+  AC    DEC   101   1   10E6
+   * Result available in ac1.
+
+
+   * Calculate gain vs frequency in dB fro ac1
+  let  run1db = 20*log10(abs(ac1.v(out)))
+
+   * Plot all on the same plot
+  plot run1db
+.endc
+
+.end

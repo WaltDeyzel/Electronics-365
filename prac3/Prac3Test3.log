@@ -1,0 +1,7 @@
+Questionable use of curly braces in "let mark = {mark} + 1"
+    Error: undefined symbol in: "[mark]"
+Questionable use of curly braces in "let mark = {mark} + 1"
+    Error: undefined symbol in: "[mark]"
+Circuit: * NGSPICE test bench for Electronics 365 Practical 3
+
+Fatal Error: Multiple instances of "Echo"

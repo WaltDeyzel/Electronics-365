@@ -1,0 +1,36 @@
+*------------------------------------------------------------------------------------------------------------------------- * SPICE model for amplifier with compensation
+* -------------------------------------------
+* Surname: Keanly
+* First name: Oran
+* Student number: 21738494
+* -------------------------------------------
+
+* op amp model
+.subckt opamp   non    inv     out
+Ri      non    inv     1e14
+Eout    out    0       non    inv    1e7
+.ends
+
+* Define amplifier circuit with compensation as a subcircuit
+.subckt comps pa na pb nb vcc vee vo1 vo2 vx1 vx2
+
+* -------- Start of student code --------
+
+*Op amps for amplifier
+XOPAMPA  pa   na   vo1   opamp
+XOPAMPB  pb   nb   vo2   opamp
+
+* Original circuit
+R1      0     na     20k
+R2      na    vo1    80k
+R3      vx3   nb     15k
+R4      nb    vo2    45k
+
+* Compensation
+Ra      vx1    0      0
+Rb      vx2    pb     0
+Rx      vx3    0      0
+
+* --------- End of student code ---------
+.ends
+*-------------------------------------------------------------------------------------------------------------------------

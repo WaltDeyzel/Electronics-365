@@ -1,0 +1,57 @@
+* NGSPICE test bench for Electronics 365 Practical 2
+* ------------------------------------------------------------------
+* Author:	Coenrad Fourie & Tessa Hall
+* Last Mod:	30 August 2020
+* ------------------------------------------------------------------
+* INFO: Practical 2 Feedback Amplifier will plug into this testbench
+* for analysis. It must pass all checks for full marks.
+* ------------------------------------------------------------------
+* THIS TEST BENCH IS ONLY FOR STUDENT NUMBERS ENDING IN 5!!!
+* ------------------------------------------------------------------
+
+* Student amplifier is subckt "diffamp" in file "yourstudentnumber.cir" - Use your student number
+.include yourstudentnumber.cir
+
+* ================== FEEDBACK AMPLIFIER ==================
+* Pins: Sig	Out	Supply	[subckt name]
+Xamp	in	out	nvcc	feedamp
+
+* DC Voltage Supply
+VCC     NVCC   0        DC     10
+
+* Input Signal
+VS      IN	0      0    AC    1     0      
+
+.control
+
+*  Do ac analysis at single frequency (1 kHz in this case)
+  AC    DEC     1  1k   1k
+
+*  Measure ac magnitudes at 1 kHz
+  meas ac vo_magn max v(out) AT=1k
+  meas ac ix_magn max i(v.xamp.vri) AT=1k
+  meas ac vx_magn max v(xamp.nin) AT=1k
+  let avf = vo_magn/1
+  let rif = vx_magn/(ix_magn)
+  echo
+  echo Closed-loop voltage gain Avf = "$&avf"
+  echo Input resistance = "$&rif" Ohm
+
+* Determine and print out mark
+  let mark = 0 
+  if avf >= 11.8
+      if avf <= 11.9
+        let mark = mark + 1
+      end
+  end
+  if rif >= 12.66
+      if rif <= 13.0
+        let mark = mark + 1
+      end
+  end
+  echo
+  echo FINAL MARK = "$&mark"
+  echo
+
+.endc
+.end

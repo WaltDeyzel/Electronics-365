@@ -1,0 +1,65 @@
+*------------------------------------------------------------------------------------------------------------------------- * SPICE model for amplifier with compensation
+* -------------------------------------------
+* Surname: DEYZEL
+* First name: WALT
+* Student number: 21750793
+* -------------------------------------------
+
+* op amp model
+.subckt opamp   non    inv     out
+Ri      non    inv     1e14
+Eout    out    0       non    inv    1e7
+.ends
+
+Xcircuit pa na pb nb vcc vee vo1 vo2 vx1 vx2 comps 
+
+* -------- Start of student code --------
+VCC     vcc    0       DC   10
+VEE     vee    0       DC   -10
+
+.param  VOS=2m
+.param  IB2=3.2u
+.param  IB1=2.8u
+
+VOS1    pa     vx1     DC     VOS
+VOS2    vx2    vo1     DC     VOS
+IBA1    pa     0       DC     IB1
+IBA2    na     0       DC     IB2
+IBB1    pb     0       DC     IB1
+IBB2    nb     0       DC     IB2
+
+*Op amps for amplifier
+XOPAMPA  pa   na   vo1   opamp
+XOPAMPB  pb   nb   vo2   opamp
+
+vi      i      1    0    ac    1    0
+* Original circuit with random values
+R1      1     na     2k
+R2      na    vo1    8k
+R3      vx3   nb     15k
+R4      nb    vo2    45k
+
+
+* Dummy components in the place of compensation
+Rd1  vx1  0    0
+
+Rd2  pb   vx2  0
+Rd3  vx3  yyy  0
+
+.control
+   * Do AC sweep when AvCL approxeq 1E6
+  AC    DEC   101   1   10E6
+   * Result available in ac1.
+
+
+   * Calculate gain vs frequency in dB fro ac1
+  let  run1db = 20*log10(abs(ac1.v(vo1)))
+
+   * Plot all on the same plot
+  plot run1db
+.endc
+
+
+* --------- End of student code ---------
+.ends
+*-------------------------------------------------------------------------------------------------------------------------

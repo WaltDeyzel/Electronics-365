@@ -1,0 +1,74 @@
+* NGSPICE test bench for Electronics 365 Practical 1
+* ---------------------------------------------------------------
+* Author:	Coenrad Fourie & Tessa Hall
+* Last Mod:	15 August 2020
+* ---------------------------------------------------------------
+* INFO: Practical 1 Differntial Amplifier will plug into this
+*       testbench for analysis. It must pass all checks for full
+*       marks.
+* ---------------------------------------------------------------
+* THIS TEST BENCH IS ONLY FOR STUDENT NUMBERS ENDING IN 2 OR 3!!!
+* ---------------------------------------------------------------
+
+* Student amplifier is subckt "diffamp" in file "yourstudentnumber.cir" - Use your student number
+.include 21750793.cir
+
+* ================== DIFFERENTIAL AMPLIFIER ==================
+* Pins: Sig1	Sig2	Out	Supply+	Supply-	[subckt name]
+Xamp	in1	in2	out	vcc	vee	diffamp
+
+* Voltage Sources
+VCC   vcc   0     10
+VEE   vee   0    -10
+
+* Common mode input voltage:
+Vcm   nVcm   0  0   AC    0  0
+
+* Differential mode input voltage (VCVS's)
+Ed1   in1  nVcm  nControl  0  0.5
+Ed2   in2  nVcm  nControl  0 -0.5
+
+* Separate control voltage for the differential voltage
+Vd    nControl 0 0  AC 1  0
+Rd    nControl 0 10k
+
+.control
+
+* Run an ac analysis with Vd = 1 Vac - this gives Diff mode gain Ad  
+AC DEC 101 1 10k
+
+* Now set Vd[acmag]=0, and Vcm[acmag]=1  
+alter @Vd[acmag]=0 
+alter @Vcm[acmag]=1
+
+* Run ac analysis again; now with Vcm = 1 Vac. This gives Common mode gain Acm  
+AC DEC 101 1 10k
+
+* Measure common mode gain (single sided) at VC2  
+meas ac acommon min ac.v(out)
+
+* Measure differential mode gain (single sided) at VC2, but on previous AC simulation 
+meas ac adiff  max ac1.v(out)
+
+* Now calculate the CMRR and print out 
+let CMRR = abs(adiff/acommon) 
+echo CMRR = "$&CMRR" 
+let CMRRdb = 20*log10(CMRR)  
+echo CMRRdb = "$&CMRRdb"  
+
+* Determine and print out mark
+let mark = 0 
+if adiff > 13.5
+    let mark = mark + 2
+end
+if acommon > -8e-5
+    let mark = mark + 2
+end
+if CMRRdb > 104.5
+    let mark = mark + 1
+end
+echo
+echo FINAL MARK = "$&mark"
+
+.endc
+.end

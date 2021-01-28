@@ -1,0 +1,39 @@
+*-------------------------------------------------------------------------------------------------------------------------
+* SPICE model for MFB filter
+* -------------------------------------------
+* Surname: Deyzel
+* First name: Walt
+* Student number: 21750793
+* -------------------------------------------
+.include TL081.cir
+
+* Define filter as a subcircuit
+.subckt filt in out vcc vee
+
+* -------- Start of student code --------
+
+XA     Ap    An    	vcc    	vee    Aout    TL081
+XB     Bp    Bn    	vcc    	vee    out    TL081
+
+* Dummy resistors in the place of student's circuit
+R1q   	in      x    	799.423
+R3q   	x   	Aout  	2528
+C2q 	An 		Aout		22n
+R0q   	Ap 		0 		0
+*---------------------------------
+R2q   	x       An  	462.558
+C1q   	x  	    0  		110n
+
+
+
+R1w   Aout     y    	538.736
+R3w   y        out  	1703.633
+C2w   Bn 	   out		22n
+R0w   bp 	   0 		0
+*---------------------------------------
+R2w   y        Bn  		34.1331
+C1w   y        0  		2.2u
+
+* --------- End of student code ---------
+.ends
+*-------------------------------------------------------------------------------------------------------------------------
